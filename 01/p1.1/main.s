@@ -23,9 +23,16 @@ buf:              .space    BUF_SZ, 0
 .text
 # fixed size
 
-
-
-.globl main
 # make symbol visible to 'ld'
 #     .global or .globl
+.globl main
+
+main:
+# Caller saved registers (i.e. volatile, call-clobbered)
+# Callee saved registers (i.e. ~volatile, call-preserved)
+
+# calling functions, registers are used in this order
+#   %rdi, rsi, rdx, rcs, r8, r9
+#     7th and more arguments push onto stack
+#   stack (rsp) must be 16B-aligned?
 
