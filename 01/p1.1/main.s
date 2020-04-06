@@ -33,23 +33,26 @@ buf:              .space    BUF_SZ, 0
 main:
 # Caller saved registers (i.e. volatile, call-clobbered)
 # Callee saved registers (i.e. ~volatile, call-preserved)
-
 # calling functions, registers are used in this order
 #   %rdi, rsi, rdx, rcs, r8, r9
 #     7th and more arguments push onto stack
 #   stack (rsp) must be 16B-aligned?
-
 #prolog
   push %r12
   push %r13
-
 #check args
   mov %rdi, %r12  # argc
   mov %rsi, %r13  # argv
   cmp $2, %r12
   je keep_going
-
-#otherwise, exit
+# print failure
+  mov $usg_str, %rdi  #usage string
+  mov (%r13), %rsi    #argv[0]
+# printf is variadic, uses %al
+  xor %rax, %rax
+  call printf
+# exit
+  mov $1, %rax
   jmp main_ret
 
 
