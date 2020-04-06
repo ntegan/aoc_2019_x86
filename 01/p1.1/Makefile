@@ -4,3 +4,5 @@ main: errno.o
 
 clean:
 	$(RM) main errno.o
+run:
+	./main
